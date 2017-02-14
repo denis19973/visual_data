@@ -1,3 +1,4 @@
+
 def validate_country(country_name):
     countries = {"Afghanistan": "AFG", "Angola": "AGO", "Albania": "ALB", "United Arab Emirates": "ARE",
                  "Argentina": "ARG", "Armenia": "ARM", "Antarctica": "ATA",
@@ -60,10 +61,8 @@ def validate_country(country_name):
 
 
     try:
-        print(countries.keys())
         for key in countries.keys():
             words = key.split()
-            print(words)
             exeption_words = ['of', 'the', 'Republic', 'United', 'States']
 
             for word in words:
@@ -71,8 +70,6 @@ def validate_country(country_name):
                     continue
 
                 elif word in country_name:
-                        print('WORD:', word, "Country name", country_name)
-                        print('KEEEEEEEEEEEEY',countries[key])
                         return countries[key]
 
 
