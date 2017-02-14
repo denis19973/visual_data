@@ -1,9 +1,9 @@
 from flask import Flask
 from pymongo import MongoClient
-from flask import jsonify
+from flask import render_template, jsonify
 
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='/static')
 
 def get_db():
     client = MongoClient('localhost:27017')
@@ -11,16 +11,40 @@ def get_db():
     return db
 
 
-@app.route('/get_data', methods=['GET'])
-def hello_world():
+@app.route('/api/get_data', methods=['GET'])
+def get_data():
     data = {}
 
     for elem in db.world_bank.find():
-        # Structure of data
-        # {'project_name': {'country_name': 'UK', 'lendprojectcost': 1000}}
-        data[elem['project_name']] = dict(country_name=elem['countryname'], lendprojectcost=elem['lendprojectcost'])
+        """ Structure of data:
+
+                "Arab Republic of Egypt": {
+                    "lendprojectscost": 2404430000,
+                    "projects_name": [
+                        "EG - Helwan South Power Project",
+                        "Youth Employment"
+                    ]
+                },
+               """
+        try:
+            country_dict = data[elem['countryname']]
+            country_dict['projects_name'].append(elem['project_name'])
+            country_dict['lendprojectscost'] += int(elem['lendprojectcost'])
+        except KeyError:
+            data[elem['countryname']] = {}
+            country_dict = data[elem['countryname']]
+            country_dict['projects_name'] = []
+            country_dict['projects_name'].append(elem['project_name'])
+            country_dict['lendprojectscost'] = int(elem['lendprojectcost'])
 
     return jsonify(data)
+
+
+@app.route('/', methods=['GET'])
+def home():
+    return render_template('index.html')
+
+
 
 
 if __name__ == '__main__':
