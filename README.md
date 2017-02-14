@@ -17,5 +17,5 @@ On the client side AJAX request gets data from server
 and shows using d3.js. 
 
 ###View in Mozila Firefox###
-![picture alt](http://hkar.ru/NJ9G "view")
+![picture alt](http://i.piccy.info/i9/4f5bc237f3fdd7441e65da03970940be/1487093859/156402/1118991/lylQA_croper_ru.png "view")
 
