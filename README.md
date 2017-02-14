@@ -16,6 +16,6 @@ Back-end side is wrote on Flask and uses MongoDB.
 On the client side AJAX request gets data from server 
 and shows using d3.js. 
 
-###Daily view###
-![picture alt](http://hostingkartinok.com/show-image.php?id=2e46c92ae09ae2357c4d8ba4d515c515 "view")
+###View in Mozila Firefox###
+![picture alt](http://hkar.ru/NJ9G "view")
 
