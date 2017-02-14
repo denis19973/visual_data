@@ -1,6 +1,8 @@
 from flask import Flask
 from pymongo import MongoClient
-from flask import render_template, jsonify
+from flask import render_template, Response
+from country_validator import validate_country
+import json
 
 
 app = Flask(__name__, static_url_path='/static')
@@ -18,7 +20,7 @@ def get_data():
     for elem in db.world_bank.find():
         """ Structure of data:
 
-                "Arab Republic of Egypt": {
+                "USA": {
                     "lendprojectscost": 2404430000,
                     "projects_name": [
                         "EG - Helwan South Power Project",
@@ -26,18 +28,22 @@ def get_data():
                     ]
                 },
                """
+
+        valid_name = validate_country(elem['countryname'])
         try:
-            country_dict = data[elem['countryname']]
+
+            country_dict = data[valid_name]
             country_dict['projects_name'].append(elem['project_name'])
             country_dict['lendprojectscost'] += int(elem['lendprojectcost'])
         except KeyError:
-            data[elem['countryname']] = {}
-            country_dict = data[elem['countryname']]
+            data[valid_name] = {}
+            country_dict = data[valid_name]
             country_dict['projects_name'] = []
             country_dict['projects_name'].append(elem['project_name'])
             country_dict['lendprojectscost'] = int(elem['lendprojectcost'])
 
-    return jsonify(data)
+
+    return Response(json.dumps(data), mimetype='application/json')
 
 
 @app.route('/', methods=['GET'])
